@@ -71,8 +71,9 @@ def test_ad_details_splits_amenities_and_skips_separate_fields():
         {"title": "Дом", "feature": {"id": m.F_HOUSE, "type": "FEATURE_TEXT", "value": "-"}},
         {"title": "Контакты", "feature": {"id": m.F_CONTACTS, "type": "FEATURE_CONTACTS", "value": {"phone_numbers": ["37360000000"]}}},
     ]}]
-    d = m.ad_details({"id": "1", "title": "t", "state": "AD_STATE_PUBLIC", "groups": groups})
+    d = m.ad_details({"id": "1", "title": "t", "state": "AD_STATE_PUBLIC", "body": {"id": m.F_BODY, "value": "A nice flat"}, "groups": groups})
     assert d["price"] == "500 EUR"
+    assert d["description"] == "A nice flat"
     assert d["characteristics"] == {"Общая площадь": "50 m²"}
     assert d["amenities"] == ["Лифт"]
     assert d["phones"] == ["+37360000000"]
@@ -143,6 +144,7 @@ def test_get_ad_has_details_and_phone():
     ad_id = call("search", query="iphone", category=40, limit=1)["ads"][0]["id"]
     d = call("get_ad", ad=f"https://999.md/ru/{ad_id}")
     assert d["id"] == ad_id and d["title"] and d["characteristics"]
+    assert d["description"]
     assert d["seller"]["login"]
     assert all(p.startswith("+") for p in d["phones"])
 

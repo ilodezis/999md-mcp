@@ -67,6 +67,7 @@ AD_Q = f"""query($input: AdvertInput!) {{ advert(input: $input) {{
   posted(input: {{{DATE}}}) reseted(input: {{{DATE}}}) expire(input: {{{DATE}}})
   subCategory {{ id url title {{ translated }} }}
   owner {{ id login createdDate(input: {{format: "2006-01-02"}}) verification {{ isVerified }} business {{ plan }} }}
+  body: feature(id: {F_BODY}) {{ id value }}
   groups(placement: VIEW_ONE_DEFAULT) {{ controls {{ title feature {{ id type value }} }} }}
 }} }}"""
 PHOTOS_Q = f"query($input: AdvertInput!) {{ advert(input: $input) {{ id photos: feature(id: {F_PHOTOS}) {{ value }} }} }}"
@@ -222,6 +223,8 @@ def build_filters(filters: list[Filter], price_min: float | None = None, price_m
 
 def ad_details(a: dict) -> dict:
     by_id, specs, amenities = {}, {}, []
+    if a.get("body"):
+        by_id[F_BODY] = a["body"]
     for control in (c for g in a.get("groups") or [] for c in g["controls"]):
         f = control["feature"]
         by_id[f["id"]] = f
