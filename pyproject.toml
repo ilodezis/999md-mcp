@@ -1,0 +1,20 @@
+[project]
+name = "999md-mcp"
+version = "0.1.0"
+description = "Read-only MCP server for 999.md (Moldovan classifieds) over the site's own GraphQL API"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=4.0.3,<5",
+    "httpx>=0.28.1",
+    "pillow>=11",
+]
+
+[project.urls]
+Repository = "https://github.com/ilodezis/999md-mcp"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]

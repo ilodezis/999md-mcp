@@ -1,0 +1,9 @@
+services:
+  999md-mcp:
+    build: .
+    container_name: 999md-mcp
+    env_file: .env
+    ports:
+      # Loopback only: the reverse proxy terminates TLS and forwards here.
+      - "127.0.0.1:8013:8013"
+    restart: unless-stopped
